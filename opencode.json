@@ -24,7 +24,7 @@
     "context7": { "type": "remote", "url": "https://mcp.context7.com/mcp" }
   },
   "permission": {
-    "edit": "ask",
-    "bash": "ask"
+    "edit": "allow",
+    "bash": "allow"
   }
 }
