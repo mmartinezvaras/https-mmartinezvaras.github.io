@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@plugin "tailwindcss-primeui";
+
 
 /* El modo oscuro de Tailwind sigue la misma clase que PrimeNG */
 @custom-variant dark (&:where(.app-dark, .app-dark *));

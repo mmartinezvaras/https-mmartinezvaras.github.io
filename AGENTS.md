@@ -1,57 +1,29 @@
-\# Portfolio personal (Angular)
+# Portfolio personal (Angular)
 
+## Entorno
+- Windows, PowerShell 5.1. Proyecto en C:\proyectos\portfolio\web.
+- Angular 22, componentes standalone, signals, TypeScript estricto.
+- Tailwind CSS 4 y GSAP. NO uses PrimeNG ni instales paquetes sin preguntar.
+- Compilar: `npx ng build`.
 
+## Reglas
+- Haz SOLO lo que se pide. No adelantes trabajo ni inventes archivos.
+- Usa solo archivos y módulos que existan. Si necesitas uno nuevo, créalo en esa misma tarea.
+- Escribe archivos con la herramienta de edición, nunca con Set-Content ni Out-File (corrompen los acentos).
+- No rebusques en node_modules. Si un build falla, muestra el error completo.
+- Al acabar, ejecuta `npx ng build` y `git status` y enseña la salida real.
+- Nunca digas que hiciste algo sin haberlo hecho con las herramientas.
 
-\## Entorno
+## Estructura
+- src/app/core/layout: header y footer
+- src/app/pages/<ruta>/<ruta>.ts: una página por ruta, con `export default class` (lazy loading)
+- src/app/data/site.ts: todo el contenido personal, con placeholders [TU ...]
+- src/content/projects/*.json: un archivo por proyecto
 
-\- Windows, PowerShell 5.1. Carpeta del proyecto: C:\\proyectos\\portfolio\\web
-
-\- El proyecto ya está creado con `ng new` (Angular 22). Usa `npx ng build` para compilar.
-
-\- Angular (última estable), standalone components, signals, TypeScript estricto.
-
-\- PrimeNG con tema propio (@primeuix/themes), Tailwind CSS con tailwindcss-primeui, GSAP.
-
-\- Los paquetes ya están instalados. Antes de usar APIs de Angular, PrimeNG, Tailwind o GSAP, consulta Context7. No te fíes de tu memoria: las versiones han cambiado.
-
-
-
-\## Reglas de trabajo
-
-\- Haz SOLO la fase que se te pide. No adelantes trabajo.
-
-\- Al terminar cada fase ejecuta `npx ng build` y muestra el resultado. Si falla, corrige antes de dar nada por hecho.
-
-\- Nunca digas que has creado o ejecutado algo sin haberlo hecho con las herramientas.
-
-\- No instales paquetes nuevos sin preguntar.
-
-\- Escribe archivos solo con la herramienta de edición, nunca con Set-Content ni Out-File de PowerShell (corrompen los acentos).
-
-
-\## Estructura
-
-\- src/app/core: layout, servicios, tema
-
-\- src/app/pages: una carpeta por ruta (lazy loading)
-
-\- src/app/shared: componentes reutilizables
-
-\- src/app/data/site.ts: TODO el contenido personal, con placeholders tipo \[TU NOMBRE]
-
-\- src/content/projects/\*.json: un archivo por proyecto (título, resumen, tags, fecha, repo, imágenes, caso de estudio)
-
-
-
-\## Diseño
-
-\- Estética: minimalismo técnico con acentos de color. Sin gradientes morados, sin hero con foto redonda, sin tarjetas idénticas en cuadrícula.
-
-\- Paleta limitada: 1 color de fondo, 1 de texto, 1 acento. Modo oscuro y claro.
-
-\- Tipografía: titulares muy grandes y una fuente monoespaciada para detalles técnicos. Jerarquía clara, espaciado generoso.
-
-\- Animaciones: 150-300 ms, easing de salida suave (ease-out), nada que bloquee la interacción. Respeta prefers-reduced-motion.
-
-\- Accesibilidad: HTML semántico, foco visible, contraste suficiente.
-
+## Diseño
+- Estética: minimalismo técnico. Sin gradientes morados, sin hero con foto redonda, sin tarjetas idénticas en cuadrícula.
+- Colores SOLO con estas clases: bg-bg, text-fg, text-muted, border-line, text-accent. No inventes colores.
+- font-mono para detalles técnicos. Titulares grandes, espaciado generoso.
+- Modo oscuro: clase `app-dark` en <html>.
+- Animaciones de 150-300 ms con ease-out. Respeta prefers-reduced-motion.
+- HTML semántico, foco visible.
