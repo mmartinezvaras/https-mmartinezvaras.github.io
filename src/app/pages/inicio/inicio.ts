@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-inicio',
   standalone: true,
   imports: [CommonModule],
-  template: '<h2>Bienvenido</h2><p>Demostración de contenido inicial.</p>'
+  template: '<h1>Bienvenido</h1><p>Demostraci&#243;n de contenido inicial.</p>'
 })
 export default class InicioComponent {}

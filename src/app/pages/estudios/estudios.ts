@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-estudios',
   standalone: true,
   imports: [CommonModule],
-  template: '<h2>Estudios</h2><p>Demostración de contenido sobre estudios.</p>'
+  template: '<h1>Estudios</h1><p>Demostraci&#243;n de contenido sobre estudios.</p>'
 })
 export default class EstudiosComponent {}

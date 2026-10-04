@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-sobre-mi',
   standalone: true,
   imports: [CommonModule],
-  template: '<h2>Sobre Mí</h2><p>Demostración de contenido sobre mí.</p>'
+  template: '<h1>Sobre m&#237;</h1><p>Demostraci&#243;n de contenido sobre m&#237;.</p>'
 })
 export default class SobreMiComponent {}

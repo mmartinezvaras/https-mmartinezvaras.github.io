@@ -26,6 +26,7 @@
 
 \- No instales paquetes nuevos sin preguntar.
 
+\- Escribe archivos solo con la herramienta de edición, nunca con Set-Content ni Out-File de PowerShell (corrompen los acentos).
 
 
 \## Estructura

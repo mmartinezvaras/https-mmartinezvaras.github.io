@@ -5,6 +5,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-skills',
   standalone: true,
   imports: [CommonModule],
-  template: '<h2>Skills</h2><p>Demostración de contenido sobre skills.</p>'
+  template: '<h1>Skills</h1><p>Demostraci&#243;n de contenido sobre skills.</p>'
 })
 export default class SkillsComponent {}
