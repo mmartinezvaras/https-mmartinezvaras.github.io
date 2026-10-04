@@ -1,3 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
 @plugin "tailwindcss-primeui";
+
+/* El modo oscuro de Tailwind sigue la misma clase que PrimeNG */
+@custom-variant dark (&:where(.app-dark, .app-dark *));
+
+/* ---------- Paleta: 1 fondo, 1 texto, 1 acento ---------- */
+:root {
+  --bg: #f6f5f1;
+  --fg: #14151a;
+  --muted: #5c5f66;
+  --line: #d9d7cf;
+  --accent: #0a7d5a;
+}
+
+.app-dark {
+  --bg: #0d0f12;
+  --fg: #e8e8e3;
+  --muted: #9a9ea6;
+  --line: #262a30;
+  --accent: #3ddc97;
+}
+
+/* Tailwind: genera clases como bg-bg, text-fg, text-muted, border-line, text-accent */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --font-sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+/* ---------- Base ---------- */
+html {
+  color-scheme: light;
+}
+html.app-dark {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+}
+
+h1, h2, h3 {
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-weight: 600;
+}
+
+*, *::before, *::after {
+  border-color: var(--line);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
