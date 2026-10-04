@@ -1,14 +1,14 @@
 // TODO el contenido personal vive aquí. Lo que lleva [CORCHETES] hay que sustituirlo.
 export const site = {
-  name: 'Marcos María Martínez Vars',
+  name: 'Marcos María Martínez Varas',
   role: 'Estudiante de Big Data e IA aplicada · Aprendiendo COBOL',
   tagline: 'Convierto datos en decisiones.',
   intro:
     'Estudio Big Data e IA aplicada y estoy aprendiendo COBOL: me interesa tanto lo que se construye hoy como los sistemas que llevan décadas funcionando.',
   seeking: 'Busco prácticas y trabajo en datos, IA o modernización de sistemas.',
-  email: '[TU EMAIL]',
-  github: '[TU GITHUB]',
-  linkedin: '[TU LINKEDIN]',
+  email: 'mmartinezvaras@icloud.com',
+  github: 'https://github.com/mmartinezvaras',
+  linkedin: 'https://www.linkedin.com/in/marcos-mar%C3%ADa-mart%C3%ADnez-varas-b5156b3a3/',
   interests: [
     {
       title: 'Big Data',
@@ -31,14 +31,29 @@ export const site = {
     },
     {
       period: '2023 – 2025',
-      title: 'Desarrollo de Aplicaciones Multiplataforma (DAM)',
+      title: 'Técnico Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)',
       center: '[TU CENTRO DAM]',
     },
+  ],
+  experience: [
+    {
+      period: '[PERIODO]',
+      title: 'Prácticas de tecnología · 3 meses',
+      company: 'Indra / Minsait',
+      text: 'Prácticas en un equipo de desarrollo profesional, aplicando lo aprendido en el DAM.',
+    },
+  ],
+  languages: [
+    { name: 'Español', level: 'Nativo' },
+    { name: 'Inglés', level: 'C2' },
   ],
   skills: [
     {
       category: 'Big Data',
-      items: [{ name: 'Spark', learning: false }],
+      items: [
+        { name: 'Spark', learning: false },
+        { name: 'Pandas', learning: false },
+      ],
     },
     {
       category: 'IA generativa',
@@ -46,6 +61,7 @@ export const site = {
         { name: 'LLMs', learning: false },
         { name: 'Prompting', learning: false },
         { name: 'RAG', learning: false },
+        { name: 'ChromaDB', learning: false },
       ],
     },
     {
@@ -54,6 +70,8 @@ export const site = {
         { name: 'Python', learning: false },
         { name: 'SQL', learning: false },
         { name: 'Java', learning: false },
+        { name: 'TypeScript', learning: false },
+        { name: 'Angular', learning: false },
         { name: 'Git', learning: false },
         { name: 'HTML', learning: false },
         { name: 'CSS', learning: false },

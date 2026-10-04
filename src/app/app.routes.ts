@@ -7,6 +7,7 @@ export const routes: Routes = [
   { path: 'estudios', loadComponent: () => import('./pages/estudios/estudios') },
   { path: 'skills', loadComponent: () => import('./pages/skills/skills') },
   { path: 'proyectos', loadComponent: () => import('./pages/proyectos/proyectos') },
+  { path: 'proyectos/:slug', loadComponent: () => import('./pages/proyecto-detalle/proyecto-detalle') },
   { path: 'lab', loadComponent: () => import('./pages/lab/lab') },
   { path: 'contacto', loadComponent: () => import('./pages/contacto/contacto') },
   { path: '**', redirectTo: 'inicio' }
