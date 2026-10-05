@@ -5,6 +5,7 @@ export const site = {
   tagline: 'Convierto datos en decisiones.',
   intro:
     'Estudio Big Data e IA aplicada y estoy aprendiendo COBOL: me interesa tanto lo que se construye hoy como los sistemas que llevan décadas funcionando.',
+  cv: 'cv.pdf',
   seeking: 'Busco prácticas y trabajo en datos, IA o modernización de sistemas.',
   email: 'mmartinezvaras@icloud.com',
   github: 'https://github.com/mmartinezvaras',
@@ -45,7 +46,7 @@ export const site = {
   ],
   languages: [
     { name: 'Español', level: 'Nativo' },
-    { name: 'Inglés', level: 'C2' },
+    { name: 'Inglés', level: 'C2 (LanguageCert)' },
   ],
   skills: [
     {

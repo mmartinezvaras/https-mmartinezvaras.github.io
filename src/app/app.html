@@ -1,5 +1,10 @@
-<app-header />
-<main class="px-6 py-8">
-  <router-outlet />
-</main>
-<app-footer />
+<a href="#contenido"
+   class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-10 focus:bg-fg focus:px-3 focus:py-2 focus:text-bg"
+   (click)="$event.preventDefault(); principal.focus()">Saltar al contenido</a>
+<div class="flex min-h-screen flex-col">
+  <app-header />
+  <main #principal id="contenido" tabindex="-1" class="mx-auto w-full max-w-5xl flex-1 px-6 outline-none">
+    <router-outlet />
+  </main>
+  <app-footer />
+</div>

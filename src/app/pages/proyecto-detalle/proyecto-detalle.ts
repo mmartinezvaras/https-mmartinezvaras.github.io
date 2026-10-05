@@ -6,34 +6,31 @@ import { projects } from '../../data/projects';
   selector: 'app-proyecto-detalle',
   imports: [RouterLink],
   template: `
-    <section class="mx-auto max-w-3xl py-16">
+    <section class="max-w-3xl py-16 sm:py-24">
       <a routerLink="/proyectos" class="font-mono text-sm text-muted hover:text-accent">← Proyectos</a>
 
       @if (project) {
-        <h1 class="mt-6 text-4xl font-semibold sm:text-6xl">{{ project.title }}</h1>
-        <p class="mt-6 text-lg text-muted">{{ project.summary }}</p>
+        <h1 class="reveal mt-6 text-4xl sm:text-6xl">{{ project.title }}</h1>
+        <p class="reveal mt-6 text-lg text-muted" style="--i: 1">{{ project.summary }}</p>
 
-        <ul class="mt-6 flex flex-wrap gap-2">
+        <ul class="reveal mt-6 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs text-muted" style="--i: 1">
           @for (t of project.tags; track t) {
-            <li class="border border-line px-3 py-1 font-mono text-xs">{{ t }}</li>
+            <li>{{ t }}</li>
           }
         </ul>
 
-        <div class="mt-12 divide-y divide-line border-y border-line">
+        <dl class="reveal mt-12 divide-y border-y" style="--i: 2">
           @for (s of sections; track s.title) {
             <div class="grid gap-3 py-8 sm:grid-cols-[9rem_1fr]">
-              <h2 class="font-mono text-sm text-accent">{{ s.title }}</h2>
-              <p class="text-muted">{{ s.text }}</p>
+              <dt class="font-mono text-sm text-accent">{{ s.title }}</dt>
+              <dd class="text-muted">{{ s.text }}</dd>
             </div>
           }
-        </div>
+        </dl>
 
-        <a [href]="project.repo" target="_blank" rel="noopener"
-           class="mt-10 inline-block border border-fg bg-fg px-5 py-3 font-mono text-sm text-bg transition-opacity duration-200 hover:opacity-80">
-          Ver repositorio
-        </a>
+        <a [href]="project.repo" target="_blank" rel="noopener" class="btn btn-solid mt-10">Ver repositorio</a>
       } @else {
-        <h1 class="mt-6 text-4xl font-semibold">Proyecto no encontrado.</h1>
+        <h1 class="mt-6 text-4xl">Proyecto no encontrado.</h1>
       }
     </section>
   `

@@ -4,24 +4,24 @@ import { site } from '../../data/site';
 @Component({
   selector: 'app-sobre-mi',
   template: `
-    <section class="mx-auto max-w-5xl py-16">
-      <p class="font-mono text-sm text-accent">01 / Sobre mí</p>
-      <h1 class="mt-4 text-4xl font-semibold sm:text-6xl">Datos, IA y sistemas que duran.</h1>
+    <section class="py-16 sm:py-24">
+      <h1 class="reveal max-w-3xl text-5xl sm:text-7xl">Datos, IA y sistemas que duran.</h1>
 
-      <div class="mt-12 grid gap-12 md:grid-cols-[2fr_3fr]">
-        <div>
+      <div class="mt-14 grid gap-12 md:grid-cols-[1fr_1.4fr]">
+        <div class="reveal" style="--i: 1">
           <p class="text-lg text-muted">{{ site.intro }}</p>
-          <p class="mt-6 border-l-2 border-accent pl-4">{{ site.seeking }}</p>
+          <h2 class="mt-8 font-mono text-sm font-normal tracking-normal text-accent">Qué busco</h2>
+          <p class="mt-2 text-lg">{{ site.seeking }}</p>
         </div>
 
-        <ul class="divide-y divide-line border-y border-line">
+        <dl class="reveal divide-y border-y" style="--i: 2">
           @for (item of site.interests; track item.title) {
-            <li class="grid gap-2 py-6 sm:grid-cols-[8rem_1fr]">
-              <h2 class="font-mono text-sm text-accent">{{ item.title }}</h2>
-              <p class="text-muted">{{ item.text }}</p>
-            </li>
+            <div class="grid gap-2 py-6 sm:grid-cols-[8rem_1fr]">
+              <dt class="font-mono text-sm text-accent">{{ item.title }}</dt>
+              <dd class="text-muted">{{ item.text }}</dd>
+            </div>
           }
-        </ul>
+        </dl>
       </div>
     </section>
   `

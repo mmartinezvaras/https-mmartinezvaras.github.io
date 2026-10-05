@@ -1,27 +1,26 @@
 @import "tailwindcss";
 
-
-/* El modo oscuro de Tailwind sigue la misma clase que PrimeNG */
+/* El modo oscuro de Tailwind sigue la clase app-dark en <html> */
 @custom-variant dark (&:where(.app-dark, .app-dark *));
 
 /* ---------- Paleta: 1 fondo, 1 texto, 1 acento ---------- */
 :root {
-  --bg: #f6f5f1;
-  --fg: #14151a;
-  --muted: #5c5f66;
-  --line: #d9d7cf;
+  --bg: #f6f7f6;
+  --fg: #121316;
+  --muted: #5b6068;
+  --line: #dcdfdc;
   --accent: #0a7d5a;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .app-dark {
-  --bg: #0d0f12;
-  --fg: #e8e8e3;
+  --bg: #0c0e11;
+  --fg: #ecece6;
   --muted: #9a9ea6;
-  --line: #262a30;
+  --line: #24282e;
   --accent: #3ddc97;
 }
 
-/* Tailwind: genera clases como bg-bg, text-fg, text-muted, border-line, text-accent */
 @theme inline {
   --color-bg: var(--bg);
   --color-fg: var(--fg);
@@ -29,44 +28,92 @@
   --color-line: var(--line);
   --color-accent: var(--accent);
   --font-sans: "Inter Tight", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque", "Inter Tight", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
 }
 
-/* ---------- Base ---------- */
-html {
-  color-scheme: light;
-}
-html.app-dark {
-  color-scheme: dark;
+@layer base {
+  html { color-scheme: light; scroll-behavior: smooth; }
+  html.app-dark { color-scheme: dark; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 200ms var(--ease-out), color 200ms var(--ease-out);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  *, *::before, *::after { border-color: var(--line); }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 }
 
-body {
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-sans);
-  line-height: 1.6;
-  transition: background-color 200ms ease-out, color 200ms ease-out;
-}
+@layer components {
+  .navlink { color: var(--muted); transition: color 150ms var(--ease-out); }
+  .navlink.active {
+    color: var(--fg);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 8px;
+  }
 
-h1, h2, h3 {
-  letter-spacing: -0.03em;
-  line-height: 1.05;
-  font-weight: 600;
-}
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    cursor: pointer;
+    transition: transform 160ms var(--ease-out), opacity 150ms var(--ease-out),
+      box-shadow 150ms var(--ease-out), color 150ms var(--ease-out);
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-sm { padding: 0.375rem 0.75rem; }
+  .btn-solid { background: var(--fg); color: var(--bg); }
+  .btn-ghost { box-shadow: 0 0 0 1px var(--line); }
+  .btn-chip { box-shadow: 0 0 0 1px var(--line); color: var(--muted); }
+  .btn-chip[aria-pressed='true'] { box-shadow: 0 0 0 1px var(--accent); color: var(--accent); }
 
-*, *::before, *::after {
-  border-color: var(--line);
-}
+  @media (hover: hover) {
+    .navlink:hover { color: var(--fg); }
+    .btn-solid:hover { opacity: 0.85; }
+    .btn-ghost:hover, .btn-chip:hover { box-shadow: 0 0 0 1px var(--accent); color: var(--accent); }
+  }
 
-a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  /* Entrada: solo opacidad y movimiento, con easing de salida */
+  .reveal { animation: rise 320ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms); }
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* Cuadricula de puntos suave para la portada */
+  .dots {
+    background-image: radial-gradient(var(--line) 1px, transparent 1.2px);
+    background-size: 22px 22px;
+    mask-image: linear-gradient(to bottom, #000 35%, transparent);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, *::before, *::after {
     animation: none !important;
     transition: none !important;
+    scroll-behavior: auto !important;
   }
 }

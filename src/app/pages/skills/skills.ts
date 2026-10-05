@@ -1,25 +1,21 @@
 import { Component } from '@angular/core';
 import { site } from '../../data/site';
 
+type Group = (typeof site.skills)[number];
+
 @Component({
   selector: 'app-skills',
   template: `
-    <section class="mx-auto max-w-5xl py-16">
-      <p class="font-mono text-sm text-accent">03 / Skills</p>
-      <h1 class="mt-4 text-4xl font-semibold sm:text-6xl">Lo que uso.</h1>
+    <section class="py-16 sm:py-24">
+      <h1 class="reveal max-w-3xl text-5xl sm:text-7xl">Lo que uso.</h1>
 
-      <div class="mt-12 divide-y divide-line border-y border-line">
+      <div class="reveal mt-14 divide-y border-y" style="--i: 1">
         @for (group of site.skills; track group.category) {
-          <div class="grid gap-4 py-8 sm:grid-cols-[12rem_1fr]">
-            <h2 class="font-mono text-sm text-accent">{{ group.category }}</h2>
-            <ul class="flex flex-wrap gap-3">
-              @for (skill of group.items; track skill.name) {
-                <li class="border border-line px-3 py-1 font-mono text-sm">
-                  {{ skill.name }}
-                  @if (skill.learning) {
-                    <span class="ml-2 text-muted">· aprendiendo</span>
-                  }
-                </li>
+          <div class="grid gap-3 py-8 sm:grid-cols-[13rem_1fr]">
+            <h2 class="font-mono text-sm font-normal tracking-normal text-accent">{{ group.category }}</h2>
+            <ul class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-base">
+              @for (name of list(group); track name) {
+                <li>{{ name }}</li>
               }
             </ul>
           </div>
@@ -30,4 +26,8 @@ import { site } from '../../data/site';
 })
 export default class Skills {
   site = site;
+
+  list(group: Group): string[] {
+    return group.items.map((i) => (i.learning ? i.name + ' (aprendiendo)' : i.name));
+  }
 }
