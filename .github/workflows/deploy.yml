@@ -41,7 +41,7 @@ jobs:
       - name: Upload Angular build
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist/web/browser
+          path: ./dist/web
 
   deploy:
     needs: build
