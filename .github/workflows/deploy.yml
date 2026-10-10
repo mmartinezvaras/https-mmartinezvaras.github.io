@@ -35,13 +35,16 @@ jobs:
       - name: Build Angular
         run: npm run build -- --base-href=/
 
+      - name: SPA fallback (404.html)
+        run: cp dist/web/browser/index.html dist/web/browser/404.html
+
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Upload Angular build
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist/web
+          path: ./dist/web/browser
 
   deploy:
     needs: build
