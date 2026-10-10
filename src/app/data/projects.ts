@@ -2,6 +2,7 @@
 // - headline: titular corto y potente (3-5 palabras).
 // - value: una frase que explique qué aporta.
 // - metric: el resultado más llamativo, en grande. value corto ("51 %", "3 capas"), label lo explica.
+//   Entre el número y "%" va un espacio que no se parte (Alt+0160) para que no se separen al saltar de línea.
 // - featured: true solo en UN proyecto, el principal.
 // Lo marcado con [COMPLETAR] hay que sustituirlo.
 export type Area = 'IA generativa' | 'Big Data' | 'IA y ML' | 'Desarrollo';
@@ -74,7 +75,7 @@ export const projects: Project[] = [
     name: 'Machine learning con partidos de La Liga',
     value: 'Un modelo que estima si un equipo de La Liga ganará su próximo partido a partir de su forma reciente.',
     area: 'IA y ML',
-    metric: { value: '+5 pts', label: 'de precisión al añadir la forma de los 3 últimos partidos (46 % → 51 %)' },
+    metric: { value: '+5 pts', label: 'de precisión al añadir la forma de los 3 últimos partidos (46 % → 51 %)' },
     stack: ['Python', 'Pandas', 'scikit-learn', 'Random Forest', 'Jupyter'],
     repo: 'https://github.com/mmartinezvaras/MLpartidosPremier',
     problem:
@@ -84,7 +85,7 @@ export const projects: Project[] = [
     approach:
       'Codifiqué campo, rival, hora y día de la semana, y entrené un Random Forest con los partidos hasta diciembre de 2025 para probarlo con los de 2026, sin usar datos del futuro. Después añadí como variables las medias de los 3 partidos anteriores de cada equipo: goles, tiros, faltas y tarjetas.',
     result:
-      'El modelo base acierta el 59,6 % de los resultados. Con las medias móviles, la precisión al predecir victorias sube del 46,4 % al 51,5 %.',
+      'El modelo base acierta el 59,6 % de los resultados. Con las medias móviles, la precisión al predecir victorias sube del 46,4 % al 51,5 %.',
     learnings: '[COMPLETAR: qué aprendiste]',
   },
   {
