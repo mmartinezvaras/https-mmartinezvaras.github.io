@@ -1,51 +1,67 @@
 import { Component } from '@angular/core';
+import { Reveal } from '../../core/reveal';
 import { site } from '../../data/site';
 
 @Component({
   selector: 'app-estudios',
+  imports: [Reveal],
   template: `
-    <section class="py-16 sm:py-24">
-      <h1 class="reveal max-w-3xl text-5xl sm:text-7xl">Formación y experiencia.</h1>
+    <section class="wrap pt-12 sm:pt-24">
+      <p appReveal class="eyebrow">Estudios</p>
+      <h1 appReveal class="display mt-3 max-w-[12ch]" style="--i: 1">Formación y experiencia.</h1>
+    </section>
 
-      <h2 class="reveal mt-16 font-mono text-sm font-normal tracking-normal text-accent" style="--i: 1">Estudios</h2>
-      <ol class="reveal mt-4 divide-y border-y" style="--i: 1">
-        @for (item of site.education; track item.title) {
-          <li class="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]">
-            <p class="font-mono text-sm text-muted">{{ item.period }}</p>
-            <div>
-              <h3 class="text-2xl">{{ item.title }}</h3>
-              <p class="mt-1 text-muted">{{ item.center }}</p>
-            </div>
-          </li>
-        }
-      </ol>
-
-      <h2 class="reveal mt-14 font-mono text-sm font-normal tracking-normal text-accent" style="--i: 2">Experiencia</h2>
-      <ol class="reveal mt-4 divide-y border-y" style="--i: 2">
+    <section class="wrap mt-14 sm:mt-20" aria-labelledby="experiencia">
+      <h2 appReveal id="experiencia" class="text-[clamp(1.75rem,5vw,3rem)]">Experiencia.</h2>
+      <ol class="mt-8">
         @for (job of site.experience; track job.company) {
-          <li class="grid gap-2 py-6 sm:grid-cols-[10rem_1fr]">
-            <p class="font-mono text-sm text-muted">{{ job.period }}</p>
-            <div>
-              <h3 class="text-2xl">{{ job.company }}</h3>
-              <p class="mt-1">{{ job.title }}</p>
-              <p class="mt-1 text-muted">{{ job.text }}</p>
-            </div>
+          <li appReveal class="timeline-item">
+            <p class="text-sm text-muted">{{ job.period }}</p>
+            <h3 class="mt-1 text-2xl">{{ job.company }}</h3>
+            <p class="mt-1 font-medium">{{ job.title }}</p>
+            <p class="mt-2 max-w-2xl text-muted">{{ job.text }}</p>
           </li>
         }
       </ol>
+    </section>
 
-      <h2 class="reveal mt-14 font-mono text-sm font-normal tracking-normal text-accent" style="--i: 3">Idiomas</h2>
-      <ul class="reveal mt-4 divide-y border-y" style="--i: 3">
-        @for (lang of site.languages; track lang.name) {
-          <li class="grid gap-2 py-4 sm:grid-cols-[10rem_1fr]">
-            <span>{{ lang.name }}</span>
-            <span class="font-mono text-sm text-muted">{{ lang.level }}</span>
+    <section class="wrap mt-14 sm:mt-20" aria-labelledby="formacion">
+      <h2 appReveal id="formacion" class="text-[clamp(1.75rem,5vw,3rem)]">Formación.</h2>
+      <ol class="mt-8">
+        @for (item of site.education; track item.title) {
+          <li appReveal class="timeline-item" [attr.data-current]="item.current">
+            <p class="text-sm text-muted">{{ item.period }}@if (item.current) { · <span class="text-accent">En curso</span>}</p>
+            <h3 class="mt-1 text-2xl">{{ item.title }}</h3>
+            <p class="mt-1 text-muted">{{ item.center }}</p>
           </li>
         }
-      </ul>
+      </ol>
+    </section>
 
-      <h2 class="reveal mt-14 font-mono text-sm font-normal tracking-normal text-accent" style="--i: 4">Certificaciones</h2>
-      <p class="reveal mt-3 text-muted" style="--i: 4">Próximamente.</p>
+    <section class="wrap mt-14 grid gap-3 sm:mt-20 md:grid-cols-2 md:gap-5">
+      <div appReveal class="panel px-6 py-7 sm:p-8">
+        <h2 class="text-2xl">Idiomas</h2>
+        <ul class="mt-4">
+          @for (lang of site.languages; track lang.name) {
+            <li class="flex items-baseline justify-between gap-4 border-t py-3">
+              <span>{{ lang.name }}</span>
+              <span class="text-muted">{{ lang.level }}</span>
+            </li>
+          }
+        </ul>
+      </div>
+      <div appReveal class="panel px-6 py-7 sm:p-8" style="--i: 1">
+        <h2 class="text-2xl">Certificaciones</h2>
+        @if (site.certifications.length) {
+          <ul class="mt-4">
+            @for (c of site.certifications; track c.title) {
+              <li class="border-t py-3">{{ c.title }} <span class="text-muted">· {{ c.issuer }} · {{ c.year }}</span></li>
+            }
+          </ul>
+        } @else {
+          <p class="mt-4 border-t pt-3 text-muted">Próximamente.</p>
+        }
+      </div>
     </section>
   `
 })

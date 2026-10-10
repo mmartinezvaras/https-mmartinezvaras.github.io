@@ -1,24 +1,33 @@
 import { Component } from '@angular/core';
+import { Reveal } from '../../core/reveal';
 import { site } from '../../data/site';
-
-type Group = (typeof site.skills)[number];
 
 @Component({
   selector: 'app-skills',
+  imports: [Reveal],
   template: `
-    <section class="py-16 sm:py-24">
-      <h1 class="reveal max-w-3xl text-5xl sm:text-7xl">Lo que uso.</h1>
+    <section class="wrap pt-12 sm:pt-24">
+      <p appReveal class="eyebrow">Skills</p>
+      <h1 appReveal class="display mt-3" style="--i: 1">Lo que uso.</h1>
+      <p appReveal class="lead mt-5 max-w-2xl" style="--i: 2">
+        Sin barras de porcentaje: lo que he usado en proyectos reales y lo que estoy aprendiendo ahora.
+      </p>
 
-      <div class="reveal mt-14 divide-y border-y" style="--i: 1">
-        @for (group of site.skills; track group.category) {
-          <div class="grid gap-3 py-8 sm:grid-cols-[13rem_1fr]">
-            <h2 class="font-mono text-sm font-normal tracking-normal text-accent">{{ group.category }}</h2>
-            <ul class="flex flex-wrap gap-x-6 gap-y-2 font-mono text-base">
-              @for (name of list(group); track name) {
-                <li>{{ name }}</li>
+      <div class="mt-12 grid gap-3 md:grid-cols-2 md:gap-5">
+        @for (group of site.skills; track group.category; let i = $index) {
+          <section appReveal class="panel px-6 py-7 sm:p-8" [style.--i]="i % 2">
+            <h2 class="text-2xl">{{ group.category }}</h2>
+            <ul class="mt-5 flex flex-wrap gap-2">
+              @for (item of group.items; track item.name) {
+                <li class="rounded-full bg-bg px-3.5 py-1.5 text-[0.9375rem]">
+                  {{ item.name }}
+                  @if (item.learning) {
+                    <span class="ml-1 text-sm text-accent">· aprendiendo</span>
+                  }
+                </li>
               }
             </ul>
-          </div>
+          </section>
         }
       </div>
     </section>
@@ -26,8 +35,4 @@ type Group = (typeof site.skills)[number];
 })
 export default class Skills {
   site = site;
-
-  list(group: Group): string[] {
-    return group.items.map((i) => (i.learning ? i.name + ' (aprendiendo)' : i.name));
-  }
 }

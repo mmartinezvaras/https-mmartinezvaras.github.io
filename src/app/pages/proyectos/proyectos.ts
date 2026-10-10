@@ -1,51 +1,85 @@
-import { Component, computed, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { projects } from '../../data/projects';
+import { Component, ElementRef, computed, signal, viewChild } from '@angular/core';
+import { Reveal } from '../../core/reveal';
+import { ProjectCard } from '../../core/ui/project-card';
+import { Area, areas, projects } from '../../data/projects';
 
 @Component({
   selector: 'app-proyectos',
-  imports: [RouterLink],
+  imports: [Reveal, ProjectCard],
   template: `
-    <section class="py-16 sm:py-24">
-      <h1 class="reveal max-w-3xl text-5xl sm:text-7xl">Lo que he construido.</h1>
+    <section class="wrap pt-12 sm:pt-24">
+      <p appReveal class="eyebrow">Proyectos</p>
+      <h1 appReveal class="display mt-3 max-w-[12ch]" style="--i: 1">Lo que he construido.</h1>
+      <p appReveal class="lead mt-5 max-w-2xl" style="--i: 2">
+        Datos, IA y desarrollo. Cada proyecto con su resultado por delante y el código a un toque.
+      </p>
 
-      <div class="reveal mt-10 flex flex-wrap gap-2" style="--i: 1" role="group" aria-label="Filtrar por etiqueta">
-        <button type="button" class="btn btn-chip btn-sm" [attr.aria-pressed]="selected() === null" (click)="select(null)">Todos</button>
-        @for (tag of tags; track tag) {
-          <button type="button" class="btn btn-chip btn-sm" [attr.aria-pressed]="selected() === tag" (click)="select(tag)">{{ tag }}</button>
+      <div appReveal class="segmented -mx-5 mt-10 px-5 sm:mx-0 sm:px-0" style="--i: 3" role="group" aria-label="Filtrar por área">
+        <button type="button" class="chip" [attr.aria-pressed]="selected() === null" (click)="select(null)">Todos</button>
+        @for (a of areas; track a) {
+          <button type="button" class="chip" [attr.aria-pressed]="selected() === a" (click)="select(a)">{{ a }}</button>
         }
       </div>
-
-      <ul class="reveal mt-12 divide-y border-y" style="--i: 2">
-        @for (p of visible(); track p.slug) {
-          <li>
-            <a [routerLink]="['/proyectos', p.slug]" class="group grid gap-4 py-8 sm:grid-cols-[1fr_16rem] sm:gap-10">
-              <div class="transition-transform duration-200 ease-out group-hover:translate-x-1">
-                <h2 class="text-3xl transition-colors duration-150 group-hover:text-accent">{{ p.title }}</h2>
-                <p class="mt-2 max-w-2xl text-muted">{{ p.summary }}</p>
-              </div>
-              <ul class="flex flex-wrap content-start gap-x-3 gap-y-1 font-mono text-xs text-muted sm:justify-end">
-                @for (t of p.tags; track t) {
-                  <li>{{ t }}</li>
-                }
-              </ul>
-            </a>
-          </li>
-        }
-      </ul>
+      <p class="sr-only" aria-live="polite">{{ count() }}</p>
     </section>
+
+    @if (featured()) {
+      <section class="wrap mt-8" aria-label="Proyecto destacado">
+        <app-project-card appReveal [project]="featured()!" size="hero" />
+      </section>
+    }
+
+    @if (rest().length) {
+      <section class="wrap mt-16 sm:mt-24" aria-labelledby="otros">
+        <h2 appReveal id="otros" class="text-[clamp(1.75rem,5vw,3rem)]">
+          {{ featured() ? 'Más proyectos.' : (selected() ?? 'Proyectos') + '.' }}
+        </h2>
+        <ul #rail appReveal class="rail mt-8" style="--i: 1" (scroll)="onScroll()" aria-label="Proyectos, desliza para ver más">
+          @for (p of rest(); track p.slug) {
+            <li><app-project-card [project]="p" /></li>
+          }
+        </ul>
+        @if (rest().length > 1) {
+          <div class="mt-5 flex justify-center gap-2 md:hidden" aria-hidden="true">
+            @for (p of rest(); track p.slug; let i = $index) {
+              <span class="dot" [attr.data-on]="i === current()"></span>
+            }
+          </div>
+        }
+      </section>
+    }
   `
 })
 export default class Proyectos {
-  projects = projects;
-  tags = [...new Set(projects.flatMap((p) => p.tags))].sort();
-  selected = signal<string | null>(null);
-  visible = computed(() => {
-    const t = this.selected();
-    return t ? this.projects.filter((p) => p.tags.includes(t)) : this.projects;
+  areas = areas;
+  selected = signal<Area | null>(null);
+  current = signal(0);
+
+  private visible = computed(() => {
+    const a = this.selected();
+    return a ? projects.filter((p) => p.area === a) : projects;
+  });
+  featured = computed(() => this.visible().find((p) => p.featured));
+  rest = computed(() => this.visible().filter((p) => !p.featured));
+  count = computed(() => {
+    const n = this.visible().length;
+    return n === 1 ? '1 proyecto' : n + ' proyectos';
   });
 
-  select(tag: string | null) {
-    this.selected.set(tag);
+  private rail = viewChild<ElementRef<HTMLElement>>('rail');
+
+  select(a: Area | null) {
+    this.selected.set(a);
+    this.current.set(0);
+    this.rail()?.nativeElement.scrollTo({ left: 0 });
+  }
+
+  // Indicador de posición del carrusel en móvil
+  onScroll() {
+    const el = this.rail()?.nativeElement;
+    const first = el?.firstElementChild as HTMLElement | null;
+    if (!el || !first) return;
+    const step = first.offsetWidth + parseFloat(getComputedStyle(el).columnGap || '0');
+    this.current.set(Math.min(this.rest().length - 1, Math.round(el.scrollLeft / step)));
   }
 }

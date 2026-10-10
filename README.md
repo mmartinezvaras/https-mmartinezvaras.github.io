@@ -1,59 +1,45 @@
-# Web
+# Portfolio · Marcos María Martínez Varas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.1.
+Portfolio personal hecho con Angular 22 y Tailwind CSS 4. Se publica en GitHub Pages con el workflow de `.github/workflows/deploy.yml`.
 
-## Development server
-
-To start a local development server, run:
+## Arrancar en local
 
 ```bash
-ng serve
+npm install
+npm start          # http://localhost:4200
+npm run build      # genera dist/web
+npm test           # tests con Vitest
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Para probarlo en el móvil, arranca con `npx ng serve --host 0.0.0.0` y abre `http://<IP-de-tu-PC>:4200` desde el teléfono, conectado a la misma red wifi.
 
-## Code scaffolding
+## Dónde está cada cosa
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+| Qué | Archivo |
+| --- | --- |
+| Datos personales, formación, experiencia, skills | `src/app/data/site.ts` |
+| Proyectos | `src/app/data/projects.ts` |
+| Notas del Lab | `src/app/data/notes.ts` |
+| Colores, tipografía, botones, tarjetas, animaciones | `src/styles.css` |
+| Cabecera, barra de pestañas (móvil) y pie | `src/app/core/layout/` |
+| Páginas | `src/app/pages/` |
+| CV descargable | `public/Marcos_Maria_Martinez_Varas_BigData_IA.pdf` (si cambias el nombre, actualiza `cv` en `site.ts`) |
 
-```bash
-ng generate component component-name
-```
+## Añadir un proyecto
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+No hay que tocar ningún componente:
 
-```bash
-ng generate --help
-```
+1. Abre `src/app/data/projects.ts`.
+2. Copia un bloque `{ ... }` de la lista `projects` y pégalo donde quieras que aparezca (el orden de la lista es el orden en la web).
+3. Cambia sus datos:
+   - `slug`: identificador para la URL (`/proyectos/mi-proyecto`), en minúsculas y con guiones.
+   - `headline`: titular corto y potente, de 3 a 5 palabras.
+   - `value`: una frase que explique qué aporta.
+   - `metric`: el resultado más llamativo. `value` es corto ("51 %", "3 capas") y `label` lo explica.
+   - `area`: una de `IA generativa`, `Big Data`, `IA y ML` o `Desarrollo` (es el filtro de la página).
+   - `stack`, `repo` y, si tienes, `demo`.
+   - `problem`, `data`, `approach`, `result` y `learnings`: el caso de estudio de la página de detalle.
+4. Solo un proyecto lleva `featured: true`: es el que sale en grande.
+5. `npm run build` para comprobar que no hay errores.
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Lo marcado con `[COMPLETAR]` es información que falta por rellenar.

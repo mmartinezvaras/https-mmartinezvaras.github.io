@@ -1,0 +1,15 @@
+{
+  "excludes": [
+    ".agents",
+    ".claude",
+    ".opencode",
+    ".codex",
+    ".impeccable",
+    ".vscode",
+    "skills-lock.json",
+    "opencode.json",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "graphify-out"
+  ]
+}
