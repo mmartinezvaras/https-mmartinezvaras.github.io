@@ -31,15 +31,15 @@ No hay que tocar ningún componente:
 
 1. Abre `src/app/data/projects.ts`.
 2. Copia un bloque `{ ... }` de la lista `projects` y pégalo donde quieras que aparezca (el orden de la lista es el orden en la web).
-3. Cambia sus datos:
+3. Cambia sus datos, escribiendo para alguien que no es técnico (por ejemplo, un reclutador):
    - `slug`: identificador para la URL (`/proyectos/mi-proyecto`), en minúsculas y con guiones.
-   - `headline`: titular corto y potente, de 3 a 5 palabras.
-   - `value`: una frase que explique qué aporta.
-   - `metric`: el resultado más llamativo. `value` es corto ("51 %", "3 capas") y `label` lo explica.
+   - `name`: nombre corto del proyecto.
    - `area`: una de `IA generativa`, `Big Data`, `IA y ML` o `Desarrollo` (es el filtro de la página).
+   - `problem`: el problema real en una frase sencilla. Es el titular.
+   - `impact`: qué consigue. `value` es corto y llamativo ("1 de cada 2") y es lo único que sale en azul; `label` lo explica. No pongas cifras que no hayas medido.
+   - `how`: cómo funciona, en lenguaje llano.
+   - `tech`: detalles técnicos (salen plegados en la página del proyecto). Explica cada término.
    - `stack`, `repo` y, si tienes, `demo`.
-   - `problem`, `data`, `approach`, `result` y `learnings`: el caso de estudio de la página de detalle.
 4. Solo un proyecto lleva `featured: true`: es el que sale en grande.
 5. `npm run build` para comprobar que no hay errores.
 
-Lo marcado con `[COMPLETAR]` es información que falta por rellenar.

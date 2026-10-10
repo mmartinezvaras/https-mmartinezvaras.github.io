@@ -1,29 +1,28 @@
 // Para añadir un proyecto: copia un bloque, cambia sus datos y listo. No hay que tocar componentes.
-// - headline: titular corto y potente (3-5 palabras).
-// - value: una frase que explique qué aporta.
-// - metric: el resultado más llamativo, en grande. value corto ("51 %", "3 capas"), label lo explica.
-//   Entre el número y "%" va un espacio que no se parte (Alt+0160) para que no se separen al saltar de línea.
+// Escribe pensando en alguien que no es técnico (por ejemplo, un reclutador de RRHH):
+// - problem: el problema real en una frase sencilla. Es el titular del proyecto.
+// - impact: qué consigue. Es lo único que va en el color de acento.
+//     value: corto y llamativo ("1 de cada 2", "Cita la página"). label: lo explica en una frase.
+//     Nunca inventes una cifra: si no la has medido, usa una frase cierta.
+// - how: cómo funciona, en lenguaje llano.
+// - tech: detalles técnicos para quien sí lo es (se muestran plegados). Explica cada término.
 // - featured: true solo en UN proyecto, el principal.
-// Lo marcado con [COMPLETAR] hay que sustituirlo.
+// Entre un número y "%" pon un espacio que no se parte (Alt+0160) para que no se separen.
 export type Area = 'IA generativa' | 'Big Data' | 'IA y ML' | 'Desarrollo';
 
 export interface Project {
   slug: string;
-  headline: string;
   name: string;
-  value: string;
   area: Area;
-  metric: { value: string; label: string };
+  status?: string;
+  featured?: boolean;
+  problem: string;
+  impact: { value: string; label: string };
+  how: string;
+  tech: { title: string; text: string }[];
   stack: string[];
   repo: string;
   demo?: string;
-  featured?: boolean;
-  status?: string;
-  problem: string;
-  data: string;
-  approach: string;
-  result: string;
-  learnings: string;
 }
 
 export const areas: Area[] = ['IA generativa', 'Big Data', 'IA y ML', 'Desarrollo'];
@@ -32,144 +31,243 @@ export const projects: Project[] = [
   {
     slug: 'rag-pdfs',
     featured: true,
-    headline: 'Pregunta a tus PDFs.',
-    name: 'RAG sobre documentos PDF',
-    value:
-      'Un asistente que responde preguntas sobre documentos PDF usando solo su contenido, y dice de qué página sale cada respuesta.',
+    name: 'Asistente para PDFs (RAG)',
     area: 'IA generativa',
-    metric: { value: '5', label: 'fuentes citadas en cada respuesta: documento, página y fragmento' },
-    stack: ['Python', 'LangChain', 'ChromaDB', 'AWS Bedrock', 'Ollama · Mistral', 'pytest'],
-    repo: 'https://github.com/mmartinezvaras/Python-RAG-AI-para-los-PDFs',
     problem:
-      'Encontrar un dato concreto en PDFs largos obliga a leerlos enteros, y un LLM genérico no conoce su contenido o se lo inventa.',
-    data:
-      'PDFs de ejemplo (reglamentos de fútbol y de Fórmula 1). Se dividen en fragmentos de 800 caracteres con 80 de solapamiento y se indexan en una base vectorial Chroma.',
-    approach:
-      'Pipeline RAG con LangChain: carga con PyPDF, troceado con RecursiveCharacterTextSplitter, embeddings con AWS Bedrock (o nomic-embed-text en local con Ollama) y búsqueda por similitud en Chroma. Los 5 fragmentos más cercanos se pasan como contexto a Mistral, que se ejecuta en local con Ollama y solo puede responder con ese contexto. Partí de un proyecto de referencia: [COMPLETAR: cuál y qué adaptaste].',
-    result:
-      'Cada fragmento tiene un identificador estable (documento:página:fragmento), así que al añadir PDFs solo se indexa lo nuevo, sin duplicados, y cada respuesta indica de qué fragmentos sale. Incluye tests con pytest en los que el propio LLM evalúa si la respuesta coincide con la esperada. [COMPLETAR: porcentaje de acierto en tus pruebas]',
-    learnings: '[COMPLETAR: qué aprendiste]',
+      'Buscar un dato en un documento largo obliga a leerlo entero, y un chatbot normal se inventa la respuesta.',
+    impact: {
+      value: 'Cita la página',
+      label: 'Cada respuesta dice de qué documento y página sale, para que puedas comprobarla.',
+    },
+    how:
+      'Parte los PDFs en trozos, los guarda en una base de datos que busca por significado (no por palabras exactas) y le pasa los 5 trozos más parecidos a una IA que se ejecuta en el propio ordenador. Esa IA solo puede responder con lo que dicen los documentos.',
+    tech: [
+      {
+        title: 'Datos',
+        text: 'PDFs de ejemplo (reglamentos de fútbol y de Fórmula 1) divididos en fragmentos de 800 caracteres que se solapan 80, para no cortar una idea por la mitad.',
+      },
+      {
+        title: 'Búsqueda',
+        text: 'Cada fragmento se convierte en una lista de números que representa su significado (embeddings de AWS Bedrock) y se guarda en ChromaDB. Al preguntar, se recuperan los 5 fragmentos más parecidos.',
+      },
+      {
+        title: 'Respuesta',
+        text: 'Mistral, ejecutado en local con Ollama, responde usando solo esos fragmentos e indica su origen (documento, página y fragmento). Al añadir PDFs nuevos solo se procesa lo nuevo, sin duplicados.',
+      },
+      {
+        title: 'Pruebas',
+        text: 'Tests con pytest en los que el propio modelo comprueba si la respuesta coincide con la esperada. Parte de un proyecto de referencia que adapté.',
+      },
+    ],
+    stack: ['Python', 'LangChain', 'ChromaDB', 'AWS Bedrock', 'Ollama', 'Mistral', 'pytest'],
+    repo: 'https://github.com/mmartinezvaras/Python-RAG-AI-para-los-PDFs',
   },
   {
     slug: 'retail-lakehouse',
-    headline: 'Dos empresas, un solo dato.',
-    name: 'Pipeline Big Data para retail',
-    value:
-      'Pipeline en Databricks que limpia los datos de una empresa filial y los integra con los de la matriz siguiendo la arquitectura medallion.',
+    name: 'Pipeline de datos para retail',
     area: 'Big Data',
-    metric: { value: '3 capas', label: 'Bronze → Silver → Gold, sobre tablas Delta en Unity Catalog' },
-    stack: ['Databricks', 'PySpark', 'Delta Lake', 'Spark SQL', 'Unity Catalog'],
-    repo: 'https://github.com/mmartinezvaras/retail-big-data-pipeline',
     problem:
-      'Tras una adquisición, los datos de la filial llegan en CSV con duplicados, espacios sobrantes, ciudades mal escritas y valores nulos, y no se pueden analizar junto a los de la matriz.',
-    data: 'Ficheros CSV de clientes, productos y precios de la filial, una empresa de gran consumo (FMCG), cargados en un volumen de Databricks.',
-    approach:
-      'Bronze: ingesta de los CSV tal cual, con la hora de lectura y el fichero de origen. Silver: eliminación de duplicados, limpieza de espacios, nombres normalizados y ciudades corregidas con un mapa de erratas y correcciones validadas por negocio. Gold: tablas dimensionales que se fusionan con las de la matriz mediante MERGE de Delta Lake.',
-    result:
-      'Dimensiones de clientes, productos y precios limpias y unificadas en el catálogo de la empresa matriz, listas para análisis. [COMPLETAR: registros procesados o duplicados eliminados]',
-    learnings: '[COMPLETAR: qué aprendiste]',
+      'Cuando una empresa compra otra, sus listas de clientes no encajan: hay duplicados, nombres mal escritos y ciudades con erratas.',
+    impact: {
+      value: 'Una sola lista fiable',
+      label: 'Une los datos de las dos empresas en una base limpia, lista para sacar informes.',
+    },
+    how:
+      'Trabaja en tres pasos: primero guarda los ficheros tal como llegan, para no perder nada; después los limpia, quitando duplicados y corrigiendo erratas; y por último los prepara para informes y los une con los de la empresa matriz.',
+    tech: [
+      {
+        title: 'Paso 1 · Copia original',
+        text: 'Capa Bronze: los CSV de clientes, productos y precios se guardan tal cual, con la hora y el fichero de origen, para poder rehacer cualquier paso.',
+      },
+      {
+        title: 'Paso 2 · Limpieza',
+        text: 'Capa Silver: elimina duplicados, quita espacios sobrantes, unifica el formato de los nombres y corrige ciudades mal escritas con correcciones validadas por negocio.',
+      },
+      {
+        title: 'Paso 3 · Listo para informes',
+        text: 'Capa Gold: tablas finales que se fusionan con las de la empresa matriz con un MERGE de Delta Lake, que actualiza lo que ya existe y añade lo nuevo.',
+      },
+      {
+        title: 'Plataforma',
+        text: 'Databricks con PySpark y Spark SQL, tablas Delta Lake y Unity Catalog para organizar los datos por capas.',
+      },
+    ],
+    stack: ['Databricks', 'PySpark', 'Spark SQL', 'Delta Lake', 'Unity Catalog'],
+    repo: 'https://github.com/mmartinezvaras/retail-big-data-pipeline',
   },
   {
     slug: 'ml-partidos',
-    headline: 'Predecir quién gana.',
-    name: 'Machine learning con partidos de La Liga',
-    value: 'Un modelo que estima si un equipo de La Liga ganará su próximo partido a partir de su forma reciente.',
+    name: 'Predicción de partidos de La Liga',
     area: 'IA y ML',
-    metric: { value: '+5 pts', label: 'de precisión al añadir la forma de los 3 últimos partidos (46 % → 51 %)' },
-    stack: ['Python', 'Pandas', 'scikit-learn', 'Random Forest', 'Jupyter'],
+    problem: 'Predecir quién gana un partido de fútbol es difícil: hay mucho azar.',
+    impact: {
+      value: '1 de cada 2',
+      label: 'Cuando predice que un equipo ganará, acierta la mitad de las veces. Al azar serían menos de 4 de cada 10.',
+    },
+    how:
+      'Aprende de 760 resultados de La Liga 2025-26. Se entrena con los partidos hasta diciembre y se pone a prueba con los de 2026, como si no los conociera. Lo que más le ayudó fue saber cómo había jugado cada equipo en sus 3 últimos partidos.',
+    tech: [
+      {
+        title: 'Datos',
+        text: '760 registros (uno por equipo y partido) con goles, tiros, tiros a puerta, faltas, córners y tarjetas.',
+      },
+      {
+        title: 'Modelo',
+        text: 'Random Forest de scikit-learn con campo, rival, hora y día de la semana como variables. Entrenamiento hasta diciembre de 2025 y prueba con 2026, sin usar datos del futuro.',
+      },
+      {
+        title: 'Mejora clave',
+        text: 'Añadir la media de los 3 partidos anteriores de cada equipo subió la precisión al predecir victorias del 46,4 % al 51,5 %.',
+      },
+      {
+        title: 'Cómo leer el dato',
+        text: 'La precisión mide cuántas de sus predicciones de victoria se cumplen. En los partidos de prueba solo el 38 % fueron victorias, así que acertar el 51,5 % es una mejora real sobre el azar.',
+      },
+    ],
+    stack: ['Python', 'Pandas', 'scikit-learn', 'Jupyter'],
     repo: 'https://github.com/mmartinezvaras/MLpartidosPremier',
-    problem:
-      'Predecir el resultado de un partido de fútbol: un problema con tanto ruido que superar al azar ya es difícil.',
-    data:
-      '760 registros de La Liga 2025-2026 (uno por equipo y partido) con goles, tiros, tiros a puerta, faltas, córners y tarjetas. [COMPLETAR: fuente de los datos]',
-    approach:
-      'Codifiqué campo, rival, hora y día de la semana, y entrené un Random Forest con los partidos hasta diciembre de 2025 para probarlo con los de 2026, sin usar datos del futuro. Después añadí como variables las medias de los 3 partidos anteriores de cada equipo: goles, tiros, faltas y tarjetas.',
-    result:
-      'El modelo base acierta el 59,6 % de los resultados. Con las medias móviles, la precisión al predecir victorias sube del 46,4 % al 51,5 %.',
-    learnings: '[COMPLETAR: qué aprendiste]',
   },
   {
     slug: 'banking-lakehouse',
-    headline: 'Un banco, sin datos reales.',
-    name: 'Banking Lakehouse con PySpark',
-    value: 'Lakehouse con PySpark que genera transacciones bancarias simuladas para analizarlas y detectar fraude con reglas.',
+    name: 'Banco simulado con PySpark',
     area: 'Big Data',
     status: 'En desarrollo',
-    metric: { value: '0', label: 'datos reales de clientes: todo el dataset es sintético' },
+    problem:
+      'Los bancos tienen que detectar movimientos sospechosos, pero los datos de clientes reales son privados y no se pueden usar para practicar.',
+    impact: {
+      value: '0 datos reales',
+      label: 'Crea un banco ficticio con clientes y movimientos inventados, sin poner en riesgo la privacidad de nadie.',
+    },
+    how:
+      'Un programa genera los clientes y sus movimientos, y cada cambio en el código se comprueba automáticamente. El siguiente paso es avisar de patrones raros, como muchos pagos seguidos en poco tiempo.',
+    tech: [
+      {
+        title: 'Hecho',
+        text: 'Generador de datos sintéticos en Python, tests con pytest e integración continua con GitHub Actions (los tests se ejecutan solos en cada cambio).',
+      },
+      {
+        title: 'Siguiente',
+        text: 'Ingesta y limpieza con PySpark, almacenamiento en Parquet particionado y tablas Delta Lake.',
+      },
+      {
+        title: 'Detección de fraude',
+        text: 'Reglas con funciones de ventana, que comparan cada movimiento con los anteriores del mismo cliente (lag/lead y totales acumulados).',
+      },
+    ],
     stack: ['Python', 'PySpark', 'Parquet', 'Delta Lake', 'pytest', 'GitHub Actions'],
     repo: 'https://github.com/mmartinezvaras/banking-lakehouse-pyspark',
-    problem: 'Practicar ingeniería de datos bancaria sin poder usar datos de clientes, que son confidenciales.',
-    data: 'Clientes y transacciones generados con un script propio.',
-    approach:
-      'Generador de datos con tests e integración continua en GitHub Actions. Siguientes pasos: ingesta y limpieza con PySpark, almacenamiento en Parquet particionado, tablas Delta Lake y detección de fraude con funciones de ventana (lag/lead y totales acumulados).',
-    result: 'En desarrollo: ya funcionan el generador de datos, los tests y la integración continua.',
-    learnings: '[COMPLETAR: qué aprendiste]',
   },
   {
     slug: 'nosql-financiero',
-    headline: 'Banca en documentos.',
-    name: 'Motor NoSQL financiero',
-    value: 'Motor NoSQL en MongoDB Atlas para gestionar cuentas, procesar transacciones y calcular métricas financieras desde Python.',
+    name: 'Base de datos bancaria en la nube',
     area: 'Big Data',
-    metric: { value: 'Cloud', label: 'MongoDB Atlas desplegado en AWS y consultado desde Python' },
+    problem: 'Un banco necesita consultar al momento los saldos y movimientos de sus clientes.',
+    impact: {
+      value: 'Saldo medio en una consulta',
+      label: 'Calcula indicadores como el saldo medio por tipo de cuenta de una sola vez, sin recorrer cliente a cliente.',
+    },
+    how:
+      'Guarda cada cliente como una ficha con sus cuentas y movimientos dentro, en una base de datos en la nube, y usa índices (como el índice de un libro) para encontrar cuentas rápido.',
+    tech: [
+      {
+        title: 'Modelo de datos',
+        text: 'Documentos JSON en MongoDB Atlas con las cuentas y las transacciones embebidas. Los movimientos nuevos se añaden con $push.',
+      },
+      {
+        title: 'Consultas',
+        text: 'Filtros por rango de saldo e índices simples y compuestos para acelerar las búsquedas.',
+      },
+      {
+        title: 'Agregaciones',
+        text: 'Pipeline de varias etapas ($match, $group y $sort) para obtener saldos medios e indicadores financieros.',
+      },
+    ],
     stack: ['Python', 'PyMongo', 'MongoDB Atlas', 'Google Colab'],
     repo: 'https://github.com/mmartinezvaras/nosql-financial-engine',
-    problem:
-      'Modelar datos bancarios de estructura flexible, como cuentas de distintos tipos con listas de transacciones, y consultarlos de forma eficiente.',
-    data: 'Documentos JSON de clientes con saldos, tipos de cuenta y transacciones embebidas. [COMPLETAR: origen de los datos]',
-    approach:
-      'Documentos embebidos, consultas por rangos de saldo, índices simples y compuestos, transacciones añadidas con $push y pipelines de agregación ($match, $group, $sort) para obtener saldos medios e indicadores.',
-    result: '[COMPLETAR: qué métricas obtuviste]',
-    learnings: '[COMPLETAR: qué aprendiste]',
   },
   {
     slug: 'reconocimiento-facial',
-    headline: 'Pasar lista con la cámara.',
-    name: 'Sistema de reconocimiento facial',
-    value:
-      'Registra la asistencia reconociendo caras con la cámara y guarda quién llegó y a qué hora en un CSV que se consulta en un visor web.',
+    name: 'Asistencia con reconocimiento facial',
     area: 'IA y ML',
-    metric: { value: '1', label: 'registro por persona y día, aunque pase varias veces por la cámara' },
+    problem: 'Pasar lista a mano lleva tiempo y es fácil de falsear.',
+    impact: {
+      value: 'Basta con mirar a la cámara',
+      label: 'Registra quién ha llegado y a qué hora, una sola vez al día por persona.',
+    },
+    how:
+      'Compara cada cara con las fotos de las personas registradas y apunta el nombre y la hora en una hoja de cálculo diaria. La hoja se consulta en una web que no la sube a ningún servidor.',
+    tech: [
+      {
+        title: 'Reconocimiento',
+        text: 'OpenCV captura el vídeo de la cámara y face_recognition compara cada cara con las imágenes registradas.',
+      },
+      {
+        title: 'Registro',
+        text: 'Un CSV por día con nombre y hora, con un solo registro por persona aunque pase varias veces por la cámara.',
+      },
+      {
+        title: 'Visor',
+        text: 'Una web en Angular abre el CSV y lo procesa solo en el navegador, sin enviarlo a ningún servidor.',
+      },
+    ],
     stack: ['Python', 'OpenCV', 'face_recognition', 'Angular'],
     repo: 'https://github.com/mmartinezvaras/Reconocimiento_Facial',
-    problem: 'Pasar lista a mano es lento y fácil de falsear.',
-    data: 'Fotos de las personas registradas y el vídeo en directo de la cámara.',
-    approach:
-      'OpenCV captura el vídeo y face_recognition compara cada cara con las imágenes registradas. Cada reconocimiento se guarda con nombre y hora en un CSV diario. Un visor en Angular abre el CSV y lo procesa solo en el navegador, sin subirlo a ningún servidor.',
-    result: '[COMPLETAR: resultado]',
-    learnings: '[COMPLETAR: qué aprendiste]',
   },
   {
     slug: 'tfg-restaurante',
-    headline: 'Del menú al pago.',
-    name: 'Proyecto final DAM: app para restaurante',
-    value:
-      'Aplicación web para un restaurante: menú, carrito, validación del pedido, pago y factura en PDF, con salas y mesas.',
+    name: 'App de pedidos para restaurante (TFG)',
     area: 'Desarrollo',
-    metric: { value: 'Full stack', label: 'Angular con SSR, API REST en Spring Boot y base de datos MySQL' },
+    problem: 'En un restaurante lleno, esperar para pedir y para pagar es lo que más molesta.',
+    impact: {
+      value: 'Pide y paga sin esperar',
+      label: 'El cliente pide desde la web, paga todo junto o por separado, y el camarero valida el pago con un código QR.',
+    },
+    how:
+      'Una web en la que el cliente entra con su nombre, elige del menú, revisa su pedido y paga. Por detrás, un servidor guarda salas, mesas, productos y pedidos en una base de datos.',
+    tech: [
+      {
+        title: 'Web',
+        text: 'Angular 21 con renderizado en servidor: menú por categorías con buscador, carrito, pago y factura en PDF.',
+      },
+      {
+        title: 'Servidor',
+        text: 'API REST en Spring Boot (Java) organizada por capas: controladores, servicios y repositorios.',
+      },
+      {
+        title: 'Datos',
+        text: 'Base de datos MySQL con salas, mesas, productos, pedidos y usuarios, gestionada con Spring Data JPA.',
+      },
+    ],
     stack: ['Angular', 'TypeScript', 'Spring Boot', 'Java', 'MySQL'],
     repo: 'https://github.com/mmartinezvaras/TFGangular',
-    problem: 'Digitalizar la toma de pedidos y el cobro de un restaurante.',
-    data: 'Base de datos MySQL con salas, mesas, productos, pedidos y usuarios, gestionada con Spring Data JPA.',
-    approach:
-      'Frontend en Angular 21 con renderizado en servidor (SSR): menú, carrito, validación del pedido y pasarela de pago. Backend en Spring Boot con una API REST por capas (controladores, servicios y repositorios) y login.',
-    result: 'Proyecto final del ciclo DAM. [COMPLETAR: nota o valoración, si quieres mostrarla]',
-    learnings: '[COMPLETAR: qué aprendiste]',
   },
   {
     slug: 'gestion-reventa',
-    headline: 'Comprar, revender, medir.',
-    name: 'Consola de gestión de reventa',
-    value: 'Aplicación de gestión para un negocio de reventa: productos, tiendas, stock, ventas y rentabilidad en un panel.',
+    name: 'Panel de gestión para reventa',
     area: 'Desarrollo',
-    metric: { value: 'REST', label: 'API en Spring Boot por capas, con DTO, mappers y validación' },
+    problem:
+      'Si compras y revendes productos, controlar el stock y saber cuánto ganas con cada uno en hojas sueltas es un caos.',
+    impact: {
+      value: 'Margen por producto',
+      label: 'Un panel muestra el stock, las ventas y cuánto ganas con cada producto.',
+    },
+    how:
+      'Una web para dar de alta productos, tiendas y ventas, conectada a un servidor que comprueba los datos antes de guardarlos para evitar errores.',
+    tech: [
+      {
+        title: 'Servidor',
+        text: 'Spring Boot por capas (controladores, servicios, repositorios, DTO y mappers), con validación de datos y gestión de errores.',
+      },
+      {
+        title: 'Web',
+        text: 'Angular con PrimeNG, formularios reactivos y TypeScript estricto.',
+      },
+      {
+        title: 'Datos',
+        text: 'Base de datos MySQL con datos de ejemplo para empezar.',
+      },
+    ],
     stack: ['Java', 'Spring Boot', 'JPA / Hibernate', 'MySQL', 'Angular', 'PrimeNG'],
     repo: 'https://github.com/mmartinezvaras/consolaAdminProductos',
-    problem: 'Llevar el control de compras, stock y márgenes de un negocio de reventa en un solo sitio.',
-    data: 'Base de datos MySQL con datos iniciales de ejemplo.',
-    approach:
-      'Backend en Spring Boot por capas (controladores, servicios, repositorios, DTO, mappers y gestión de excepciones) con Bean Validation. Frontend en Angular con PrimeNG, formularios reactivos y TypeScript estricto.',
-    result: '[COMPLETAR: resultado]',
-    learnings: '[COMPLETAR: qué aprendiste]',
   },
 ];

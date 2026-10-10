@@ -10,8 +10,7 @@
   --fg: #1d1d1f;
   --muted: #636366;
   --line: #d2d2d7;
-  --accent: #0066cc;        /* texto y enlaces: 5,6:1 sobre blanco */
-  --accent-solid: #0066cc;  /* fondo de botón con texto blanco */
+  --accent: #0066cc;        /* SOLO para el dato de impacto (y el foco): 5,6:1 sobre blanco */
   --glass: rgb(255 255 255 / 0.72);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -29,7 +28,6 @@
   --muted: #a1a1a6;
   --line: #38383a;
   --accent: #2997ff;        /* 6:1 sobre la tarjeta oscura */
-  --accent-solid: #0071e3;  /* 4,6:1 con texto blanco */
   --glass: rgb(22 22 23 / 0.72);
 }
 
@@ -110,10 +108,21 @@
   @media (min-width: 640px) { .wrap { padding-inline: 2rem; } }
 
   .eyebrow {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
-    letter-spacing: 0.01em;
+    letter-spacing: 0;
+    color: var(--muted);
+  }
+
+  /* El dato de impacto: lo único en color de acento */
+  .impact {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
     color: var(--accent);
+    text-wrap: balance;
+    font-variant-numeric: tabular-nums;
   }
 
   .display {
@@ -136,7 +145,7 @@
     display: flex;
     flex-wrap: wrap;
     row-gap: 0.25rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     line-height: 1.4;
     letter-spacing: 0;
     color: var(--muted);
@@ -168,14 +177,14 @@
     transition: transform 140ms var(--ease-out), background-color 150ms ease, color 150ms ease, opacity 150ms ease;
   }
   .btn:active { transform: scale(0.97); }
-  .btn-solid { background: var(--accent-solid); color: #fff; }
+  .btn-solid { background: var(--fg); color: var(--bg); }
   .btn-ghost { box-shadow: inset 0 0 0 1px var(--line); color: var(--fg); }
-  .btn-link { padding: 0; min-height: 2.75rem; color: var(--accent); border-radius: 6px; }
+  .btn-link { padding: 0; min-height: 2.75rem; color: var(--fg); font-weight: 500; border-radius: 6px; }
 
   /* ---------- Control segmentado (filtro) ---------- */
   .segmented {
     display: flex;
-    gap: 0.25rem;
+    gap: 0.5rem;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
@@ -193,7 +202,7 @@
   }
   .chip {
     flex: none;
-    min-height: 2.5rem;
+    min-height: 2.75rem;
     padding: 0 1rem;
     border-radius: 999px;
     font-size: 0.9375rem;
@@ -217,15 +226,6 @@
   .stretched:focus-visible { outline: none; }
   .stretched:focus-visible::after { outline: 2px solid var(--accent); outline-offset: 3px; }
   .above { position: relative; z-index: 1; }
-
-  .metric {
-    font-family: var(--font-display);
-    font-weight: 600;
-    letter-spacing: -0.045em;
-    line-height: 0.95;
-    color: var(--accent);
-    font-variant-numeric: tabular-nums;
-  }
 
   /* ---------- Carrusel con el dedo (móvil) ---------- */
   .rail {
@@ -306,7 +306,7 @@
     background: var(--bg);
     box-shadow: inset 0 0 0 2px var(--muted);
   }
-  .timeline-item[data-current='true']::after { background: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+  .timeline-item[data-current='true']::after { background: var(--fg); box-shadow: 0 0 0 4px color-mix(in srgb, var(--fg) 15%, transparent); }
 
   /* ---------- Cromo translúcido ---------- */
   .glass {
@@ -340,8 +340,43 @@
     transition: color 150ms ease, transform 140ms var(--ease-out);
   }
   .tab:active { transform: scale(0.94); }
-  .tab[data-on='true'] { color: var(--accent); }
+  .tab[data-on='true'] { color: var(--fg); }
   .tab svg { width: 1.5rem; height: 1.5rem; }
+
+  /* ---------- Barra de acción fija sobre las pestañas (móvil) ---------- */
+  .cta-bar {
+    position: fixed;
+    inset-inline: 0;
+    bottom: calc(var(--tabbar-h) + var(--safe-bottom));
+    z-index: 35;
+    box-shadow: 0 -0.5px 0 var(--line);
+    opacity: 0;
+    transform: translateY(100%); /* se esconde detrás de la barra de pestañas */
+    transition: transform 260ms var(--ease-out), opacity 200ms ease;
+    pointer-events: none;
+  }
+  .cta-bar[data-on='true'] { opacity: 1; transform: none; pointer-events: auto; }
+
+  /* ---------- Centro de acciones en la hoja "Más" ---------- */
+  .action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    min-height: 4.5rem;
+    border-radius: 1rem;
+    background: var(--bg);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: transform 140ms var(--ease-out), background-color 150ms ease;
+  }
+  .action:active { transform: scale(0.96); }
+  .action svg { width: 1.5rem; height: 1.5rem; }
+
+  /* ---------- Detalles técnicos plegables ---------- */
+  .tech > summary { list-style: none; }
+  .tech > summary::-webkit-details-marker { display: none; }
 
   /* ---------- Hoja inferior "Más" ---------- */
   .sheet {
@@ -356,6 +391,7 @@
     border-radius: 1.5rem 1.5rem 0 0;
     background: var(--card);
     color: var(--fg);
+    overflow-y: auto;
     overscroll-behavior: contain;
     transform: translateY(0);
     transition: transform 320ms var(--ease-drawer);
@@ -394,9 +430,23 @@
     .chip:hover:not([aria-pressed='true']) { color: var(--fg); background: var(--card); }
     .card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -20px rgb(0 0 0 / 0.25); }
     .navlink:hover { color: var(--fg); }
+    .pill:hover { box-shadow: inset 0 0 0 1px var(--fg); }
   }
 
   .navlink { color: var(--muted); transition: color 150ms ease; }
+
+  /* Enlace secundario con zona táctil de 44px (pie de página) */
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0 1rem;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px var(--line);
+    color: var(--fg);
+    transition: transform 140ms var(--ease-out), box-shadow 150ms ease;
+  }
+  .pill:active { transform: scale(0.96); }
   .navlink.active { color: var(--fg); }
 }
 
@@ -417,8 +467,9 @@
   html { scroll-behavior: auto; }
   /* Sin desplazamientos: solo fundidos cortos que ayudan a entender el cambio */
   .reveal { transform: none; transition: opacity 200ms ease; transition-delay: 0ms; }
-  .card, .btn, .chip, .tab, .dot { transition-property: opacity, background-color, color; }
-  .card:active, .btn:active, .chip:active, .tab:active { transform: none; }
+  .card, .btn, .chip, .tab, .dot, .pill, .action { transition-property: opacity, background-color, color; }
+  .card:active, .btn:active, .chip:active, .tab:active, .pill:active, .action:active { transform: none; }
+  .cta-bar, .cta-bar[data-on='true'] { transform: none; transition: opacity 200ms ease; }
   .sheet, .sheet[data-closing='true'] { transform: none; transition: opacity 200ms ease; }
   .sheet[data-closing='true'] { opacity: 0; }
   @starting-style { .sheet[open] { transform: none; opacity: 0; } }
@@ -429,7 +480,8 @@
 /* Al imprimir no hay scroll que revele nada: todo visible y sin cromo de navegación */
 @media print {
   .reveal { opacity: 1 !important; transform: none !important; }
-  .tabbar, app-header, .sheet { display: none !important; }
+  .tabbar, app-header, .sheet, .cta-bar { display: none !important; }
+  .tech > :not(summary) { display: block !important; }
 }
 
 @media (prefers-reduced-transparency: reduce) {

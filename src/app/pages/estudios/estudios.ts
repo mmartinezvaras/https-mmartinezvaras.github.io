@@ -30,7 +30,7 @@ import { site } from '../../data/site';
       <ol class="mt-8">
         @for (item of site.education; track item.title) {
           <li appReveal class="timeline-item" [attr.data-current]="item.current">
-            <p class="text-sm text-muted">{{ item.period }}@if (item.current) { · <span class="text-accent">En curso</span>}</p>
+            <p class="text-sm text-muted">{{ item.period }}@if (item.current) { · <span class="font-semibold text-fg">En curso</span>}</p>
             <h3 class="mt-1 text-2xl">{{ item.title }}</h3>
             <p class="mt-1 text-muted">{{ item.center }}</p>
           </li>

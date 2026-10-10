@@ -22,7 +22,7 @@ import { site } from '../../data/site';
                 <li class="rounded-full bg-bg px-3.5 py-1.5 text-[0.9375rem]">
                   {{ item.name }}
                   @if (item.learning) {
-                    <span class="ml-1 text-sm text-accent">· aprendiendo</span>
+                    <span class="ml-1 text-sm text-muted">· aprendiendo</span>
                   }
                 </li>
               }

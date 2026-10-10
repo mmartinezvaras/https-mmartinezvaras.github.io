@@ -3,9 +3,10 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { site } from '../../data/site';
+import { Theme } from '../theme';
 import { primaryLinks, secondaryLinks } from './nav';
 
-// Barra de pestañas inferior (solo móvil) y hoja "Más" con las secciones secundarias.
+// Barra de pestañas inferior (solo móvil) y hoja "Más": acciones clave (CV, email, LinkedIn, GitHub), secciones secundarias y tema.
 // La hoja es un <dialog> nativo: atrapa el foco, se cierra con Esc y se arrastra hacia abajo para cerrarla.
 @Component({
   selector: 'app-tab-bar',
@@ -22,7 +23,7 @@ import { primaryLinks, secondaryLinks } from './nav';
                 @switch (i) {
                   @case (0) { <path d="M3.5 10.5 12 3.5l8.5 7V20a.5.5 0 0 1-.5.5h-5v-6h-6v6H4a.5.5 0 0 1-.5-.5Z" /> }
                   @case (1) { <rect x="3.5" y="3.5" width="7" height="7" rx="2" /><rect x="13.5" y="3.5" width="7" height="7" rx="2" /><rect x="3.5" y="13.5" width="7" height="7" rx="2" /><rect x="13.5" y="13.5" width="7" height="7" rx="2" /> }
-                  @case (2) { <circle cx="12" cy="8" r="4" /><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0" /> }
+                  @case (2) { <rect x="3" y="7" width="18" height="13" rx="2.5" /><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7M3 12.5h18" /> }
                   @case (3) { <rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m3.5 6.5 8.5 6.5 8.5-6.5" /> }
                 }
               </svg>
@@ -49,9 +50,35 @@ import { primaryLinks, secondaryLinks } from './nav';
         <h2 id="sheet-title" class="text-xl">Más</h2>
       </div>
 
-      <ul class="mt-3 overflow-hidden rounded-2xl bg-bg">
+      <!-- Acciones clave: siempre a un toque de distancia -->
+      <a class="btn btn-solid mt-2 w-full" [href]="site.cv" [attr.download]="site.cvFileName">
+        <svg viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14" /></svg>
+        Descargar CV
+      </a>
+      <ul class="mt-3 grid grid-cols-3 gap-2" aria-label="Contacto">
+        <li>
+          <a class="action" [href]="'mailto:' + site.email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5" /><path d="m3.5 6.5 8.5 6.5 8.5-6.5" /></svg>
+            Email
+          </a>
+        </li>
+        <li>
+          <a class="action" [href]="site.linkedin" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M5.2 8.6h3v10.2h-3zM6.7 4a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5Zm3.6 4.6h2.9V10h.04c.4-.76 1.4-1.6 2.9-1.6 3.1 0 3.6 2 3.6 4.6v5.8h-3v-5.1c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7v5.2h-3z" /></svg>
+            LinkedIn<span class="sr-only"> (se abre en otra pestaña)</span>
+          </a>
+        </li>
+        <li>
+          <a class="action" [href]="site.github" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5a9.5 9.5 0 0 0-3 18.5c.5.1.65-.2.65-.46v-1.6c-2.65.57-3.2-1.27-3.2-1.27-.43-1.1-1.06-1.4-1.06-1.4-.86-.6.07-.58.07-.58.95.07 1.45.98 1.45.98.85 1.45 2.22 1.03 2.76.79.09-.62.33-1.03.6-1.27-2.11-.24-4.33-1.06-4.33-4.7 0-1.04.37-1.89.98-2.55-.1-.24-.42-1.21.09-2.53 0 0 .8-.26 2.62.97a9 9 0 0 1 4.76 0c1.82-1.23 2.62-.97 2.62-.97.51 1.32.19 2.29.1 2.53.6.66.97 1.51.97 2.55 0 3.65-2.22 4.46-4.34 4.7.34.29.65.87.65 1.76v2.6c0 .26.17.56.66.46A9.5 9.5 0 0 0 12 2.5Z" /></svg>
+            GitHub<span class="sr-only"> (se abre en otra pestaña)</span>
+          </a>
+        </li>
+      </ul>
+
+      <ul class="mt-4 overflow-hidden rounded-2xl bg-bg">
         @for (link of more; track link.path) {
-          <li class="border-b last:border-b-0">
+          <li class="border-b">
             <a class="flex min-h-14 items-center justify-between px-4 text-[1.0625rem] transition-colors active:bg-card" [routerLink]="link.path"
                [attr.aria-current]="active() === link.path ? 'page' : null" (click)="close()">
               {{ link.label }}
@@ -59,15 +86,22 @@ import { primaryLinks, secondaryLinks } from './nav';
             </a>
           </li>
         }
+        <li>
+          <button type="button" class="flex min-h-14 w-full items-center justify-between px-4 text-[1.0625rem] transition-colors active:bg-card"
+                  (click)="theme.toggle()">
+            {{ theme.dark() ? 'Modo claro' : 'Modo oscuro' }}
+            <span class="text-sm text-muted">{{ theme.dark() ? 'Ahora: oscuro' : 'Ahora: claro' }}</span>
+          </button>
+        </li>
       </ul>
 
-      <a class="btn btn-solid mt-4 w-full" [href]="site.cv" [attr.download]="site.cvFileName">Descargar CV</a>
-      <button type="button" class="btn btn-ghost mt-3 w-full" (click)="close()">Cerrar</button>
+      <button type="button" class="btn btn-ghost mt-4 w-full" (click)="close()">Cerrar</button>
     </dialog>
   `
 })
 export class TabBar {
   site = site;
+  theme = inject(Theme);
   links = primaryLinks;
   more = secondaryLinks;
 

@@ -4,17 +4,17 @@ export interface NavLink {
   label: string;
 }
 
-// Pestañas principales: lo que más se visita, al alcance del pulgar.
+// Pestañas principales: lo que un reclutador busca primero, al alcance del pulgar.
 export const primaryLinks: NavLink[] = [
   { path: '/inicio', label: 'Inicio' },
   { path: '/proyectos', label: 'Proyectos' },
-  { path: '/sobre-mi', label: 'Sobre mí' },
+  { path: '/estudios', label: 'Experiencia' },
   { path: '/contacto', label: 'Contacto' }
 ];
 
 // En móvil viven en la hoja "Más".
 export const secondaryLinks: NavLink[] = [
-  { path: '/estudios', label: 'Estudios' },
+  { path: '/sobre-mi', label: 'Sobre mí' },
   { path: '/skills', label: 'Skills' },
   { path: '/lab', label: 'Lab' }
 ];
